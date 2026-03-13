@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = (await getCollection('posts')).filter((p) => !p.data.draft);
+  const tags = new Set<string>();
+  for (const post of posts) {
+    for (const tag of post.data.tags) tags.add(tag);
+  }
+  return [...tags].map((tag) => ({
+    params: { tag },
+    props: {
+      posts: posts
+        .filter((p) => p.data.tags.includes(tag))
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+    },
+  }));
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<BaseLayout title={`#${tag} - Ethan's Blog`}>
+  <div class="mb-8">
+    <a href="/blog/tags/" class="text-sm text-(--color-text-secondary) hover:text-(--color-text) transition-colors">← 전체 태그</a>
+    <h1 class="text-3xl font-bold mt-2">#{tag}</h1>
+    <p class="text-(--color-text-secondary)">{posts.length}개의 글</p>
+  </div>
+  <div class="space-y-4">
+    {posts.map((post) => (
+      <PostCard
+        title={post.data.title}
+        description={post.data.description}
+        category={post.data.category}
+        pubDate={post.data.pubDate}
+        tags={post.data.tags}
+        slug={post.id}
+        body={post.body}
+        bookTitle={post.data.bookTitle}
+        bookAuthor={post.data.bookAuthor}
+        rating={post.data.rating}
+      />
+    ))}
+  </div>
+</BaseLayout>

@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('posts')).filter((p) => !p.data.draft);
+const tagMap = new Map<string, number>();
+for (const post of posts) {
+  for (const tag of post.data.tags) {
+    tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
+  }
+}
+const tags = [...tagMap.entries()].sort((a, b) => b[1] - a[1]);
+---
+
+<BaseLayout title="태그 - Ethan's Blog">
+  <h1 class="text-3xl font-bold mb-8">🏷️ 태그</h1>
+  <div class="flex flex-wrap gap-2">
+    {tags.map(([tag, count]) => (
+      <a
+        href={`/blog/tags/${tag}/`}
+        class="px-3 py-1.5 rounded-lg bg-(--color-bg-secondary) text-(--color-text-secondary) hover:text-(--color-text) border border-(--color-border) hover:border-(--color-text-secondary) transition-colors text-sm"
+      >
+        #{tag} <span class="text-xs opacity-60">({count})</span>
+      </a>
+    ))}
+  </div>
+</BaseLayout>

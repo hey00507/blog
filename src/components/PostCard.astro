@@ -1,0 +1,51 @@
+---
+import { categories } from '../utils/categories';
+import { getReadingTime } from '../utils/readingTime';
+
+interface Props {
+  title: string;
+  description: string;
+  category: keyof typeof categories;
+  pubDate: Date;
+  tags: string[];
+  slug: string;
+  body?: string;
+  bookTitle?: string;
+  bookAuthor?: string;
+  rating?: number;
+}
+
+const { title, description, category, pubDate, tags, slug, body, bookTitle, bookAuthor, rating } = Astro.props;
+const cat = categories[category];
+const readingTime = body ? getReadingTime(body) : '';
+const dateStr = pubDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<article class="group border border-(--color-border) rounded-xl p-5 hover:border-[var(--cat-color)] transition-colors" style={`--cat-color: ${cat.color}`}>
+  <a href={`/blog/posts/${slug}/`} class="block">
+    <div class="flex items-center gap-2 mb-2 text-sm">
+      <span class="px-2 py-0.5 rounded-md text-white text-xs font-medium" style={`background-color: ${cat.color}`}>
+        {cat.label}
+      </span>
+      <span class="text-(--color-text-secondary)">{dateStr}</span>
+      {readingTime && <span class="text-(--color-text-secondary)">· {readingTime}</span>}
+    </div>
+    <h2 class="text-lg font-semibold mb-1 group-hover:text-[var(--cat-color)] transition-colors">{title}</h2>
+    {bookTitle && (
+      <p class="text-sm text-(--color-text-secondary) mb-1">
+        📖 {bookTitle} — {bookAuthor}
+        {rating && ` · ${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}`}
+      </p>
+    )}
+    <p class="text-sm text-(--color-text-secondary) mb-3">{description}</p>
+    {tags.length > 0 && (
+      <div class="flex flex-wrap gap-1.5">
+        {tags.map((tag) => (
+          <span class="text-xs px-2 py-0.5 rounded-md bg-(--color-bg-secondary) text-(--color-text-secondary)">
+            #{tag}
+          </span>
+        ))}
+      </div>
+    )}
+  </a>
+</article>
