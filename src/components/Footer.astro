@@ -3,7 +3,36 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="border-t border-(--color-border) py-8 mt-auto">
-  <div class="max-w-3xl mx-auto px-6 text-center text-sm text-(--color-text-secondary)">
+  <div class="max-w-3xl mx-auto px-6 text-center text-sm text-(--color-text-secondary) space-y-2">
     <p>&copy; {year} Ethan Kim. All rights reserved.</p>
+    <p id="total-visitors" class="text-xs opacity-60"></p>
   </div>
 </footer>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 글 카드 + 글 상세 조회수
+    document.querySelectorAll('.view-count').forEach(async (el) => {
+      const path = el.dataset.path;
+      try {
+        const res = await fetch(`https://ethan-blog.goatcounter.com/counter/${encodeURIComponent(path)}.json`);
+        if (res.ok) {
+          const data = await res.json();
+          el.querySelector('.count-value').textContent = data.count;
+        }
+      } catch {}
+    });
+
+    // 전체 방문자 수
+    (async () => {
+      try {
+        const res = await fetch('https://ethan-blog.goatcounter.com/counter/TOTAL.json');
+        if (res.ok) {
+          const data = await res.json();
+          const el = document.getElementById('total-visitors');
+          if (el) el.textContent = `Total ${data.count} visits`;
+        }
+      } catch {}
+    })();
+  });
+</script>

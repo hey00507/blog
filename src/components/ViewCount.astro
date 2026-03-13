@@ -13,18 +13,3 @@ const { path } = Astro.props;
   </svg>
   <span class="count-value">-</span>
 </span>
-
-<script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.view-count').forEach(async (el) => {
-      const path = el.dataset.path;
-      try {
-        const res = await fetch(`https://ethan-blog.goatcounter.com/counter/${encodeURIComponent(path)}.json`);
-        if (res.ok) {
-          const data = await res.json();
-          el.querySelector('.count-value').textContent = data.count;
-        }
-      } catch {}
-    });
-  });
-</script>
