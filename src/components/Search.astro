@@ -1,0 +1,78 @@
+---
+---
+
+<div id="search" class="relative">
+  <button
+    id="search-btn"
+    type="button"
+    aria-label="검색"
+    class="p-2 rounded-lg text-(--color-text-secondary) hover:text-(--color-text) hover:bg-(--color-bg-secondary) transition-colors cursor-pointer"
+  >
+    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    </svg>
+  </button>
+</div>
+
+<div id="search-modal" class="fixed inset-0 z-[100] hidden">
+  <div id="search-backdrop" class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+  <div class="relative max-w-xl mx-auto mt-20 mx-4">
+    <div class="bg-(--color-bg) border border-(--color-border) rounded-xl shadow-2xl overflow-hidden">
+      <div id="search-container" class="p-4"></div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  let pagefindLoaded = false;
+
+  function openSearch() {
+    const modal = document.getElementById('search-modal');
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+
+    if (!pagefindLoaded) {
+      pagefindLoaded = true;
+      const base = import.meta.env?.BASE_URL || '/blog/';
+      import(base + 'pagefind/pagefind-ui.js').then((mod) => {
+        new mod.PagefindUI({
+          element: '#search-container',
+          showSubResults: true,
+          showImages: false,
+          translations: {
+            placeholder: '검색어를 입력하세요...',
+            zero_results: '검색 결과가 없습니다.',
+          },
+        });
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = base + 'pagefind/pagefind-ui.css';
+        document.head.appendChild(link);
+        setTimeout(() => {
+          const input = document.querySelector('#search-container input');
+          if (input) input.focus();
+        }, 100);
+      });
+    } else {
+      setTimeout(() => {
+        const input = document.querySelector('#search-container input');
+        if (input) input.focus();
+      }, 50);
+    }
+  }
+
+  function closeSearch() {
+    document.getElementById('search-modal').classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('search-btn').addEventListener('click', openSearch);
+  document.getElementById('search-backdrop').addEventListener('click', closeSearch);
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      openSearch();
+    }
+    if (e.key === 'Escape') closeSearch();
+  });
+</script>

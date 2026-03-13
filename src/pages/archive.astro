@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { categories } from '../utils/categories';
+
+const posts = (await getCollection('posts'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// 연도별 그룹핑
+const grouped = new Map<number, typeof posts>();
+for (const post of posts) {
+  const year = post.data.pubDate.getFullYear();
+  if (!grouped.has(year)) grouped.set(year, []);
+  grouped.get(year)!.push(post);
+}
+---
+
+<BaseLayout title="아카이브 - Ethan's Blog">
+  <h1 class="text-3xl font-bold mb-8">📚 아카이브</h1>
+  {[...grouped.entries()].map(([year, yearPosts]) => (
+    <section class="mb-10">
+      <h2 class="text-xl font-bold mb-4 text-(--color-text-secondary)">{year}</h2>
+      <ul class="space-y-3 border-l-2 border-(--color-border) pl-6">
+        {yearPosts.map((post) => {
+          const cat = categories[post.data.category];
+          const dateStr = post.data.pubDate.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric' });
+          return (
+            <li class="relative">
+              <div class="absolute -left-[1.85rem] top-1.5 w-3 h-3 rounded-full border-2 border-(--color-border) bg-(--color-bg)" />
+              <a href={`/blog/posts/${post.id}/`} class="group flex items-baseline gap-3">
+                <time class="text-sm text-(--color-text-secondary) shrink-0 w-20">{dateStr}</time>
+                <span class="px-1.5 py-0.5 rounded text-xs text-white shrink-0" style={`background-color: ${cat.color}`}>{cat.label}</span>
+                <span class="font-medium group-hover:text-(--color-accent-dev) transition-colors">{post.data.title}</span>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  ))}
+</BaseLayout>
