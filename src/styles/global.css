@@ -33,6 +33,17 @@
     color: var(--color-text);
     transition: background-color 0.2s, color 0.2s;
   }
+
+  /* 포커스 링 — 키보드 네비게이션 시에만 표시 (WCAG AA) */
+  :focus-visible {
+    outline: 2px solid var(--color-accent-dev);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
 }
 
 /* 이미지 갤러리 — 마크다운에서 <div class="image-gallery"> 로 사용 */
