@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
+import SubcategoryNav from '../../components/SubcategoryNav.astro';
 import { getCollection } from 'astro:content';
 import { buildSlugMap } from '../../utils/slugs';
 import { subcategories, getSubcategoryLabel } from '../../utils/subcategories';
@@ -26,11 +27,9 @@ const posts = allPosts
 ---
 
 <BaseLayout title={`${subLabel} - ${catLabel} - Ethan's Blog`} description={`${catLabel} > ${subLabel}`}>
-  <div class="mb-8">
-    <a href={`/${category}/`} class="text-sm text-(--color-text-secondary) hover:text-(--color-text) transition-colors">← {catLabel}</a>
-    <h1 class="text-3xl font-bold mt-2">💻 {subLabel}</h1>
-    <p class="text-(--color-text-secondary) mt-1">{catLabel} &gt; {subLabel} · {posts.length}편</p>
-  </div>
+  <h1 class="text-3xl font-bold mb-2">💻 {catLabel}</h1>
+  <p class="text-(--color-text-secondary) mb-4">{subLabel} · {posts.length}편</p>
+  <SubcategoryNav category={category} current={subcategory} />
   {posts.length === 0 ? (
     <p class="text-(--color-text-secondary)">아직 글이 없습니다.</p>
   ) : (

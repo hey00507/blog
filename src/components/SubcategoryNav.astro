@@ -1,0 +1,42 @@
+---
+import type { Category } from '../utils/categories';
+import { subcategories } from '../utils/subcategories';
+
+interface Props {
+  category: Category;
+  current?: string; // 현재 선택된 subcategory slug (없으면 "전체")
+}
+
+const { category, current } = Astro.props;
+const subs = subcategories[category];
+const accentVar = `--color-accent-${category}`;
+---
+
+<nav class="flex flex-wrap gap-2 mb-8">
+  <a
+    href={`/${category}/`}
+    class:list={[
+      'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border',
+      !current
+        ? 'border-current bg-(--color-bg-secondary)'
+        : 'border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary)',
+    ]}
+    style={!current ? `color: var(${accentVar})` : undefined}
+  >
+    전체
+  </a>
+  {subs.map((sub) => (
+    <a
+      href={`/${category}/${sub.slug}/`}
+      class:list={[
+        'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border',
+        current === sub.slug
+          ? 'border-current bg-(--color-bg-secondary)'
+          : 'border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary)',
+      ]}
+      style={current === sub.slug ? `color: var(${accentVar})` : undefined}
+    >
+      {sub.label}
+    </a>
+  ))}
+</nav>

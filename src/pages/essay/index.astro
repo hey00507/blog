@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
+import SubcategoryNav from '../../components/SubcategoryNav.astro';
 import { getCollection } from 'astro:content';
 import { buildSlugMap } from '../../utils/slugs';
 
@@ -13,7 +14,8 @@ const posts = allPosts
 
 <BaseLayout title="일상 - Ethan's Blog" description="일상 기록, 생각 정리, 에세이">
   <h1 class="text-3xl font-bold mb-2">✍️ 일상</h1>
-  <p class="text-(--color-text-secondary) mb-8">일상 기록, 생각 정리, 에세이</p>
+  <p class="text-(--color-text-secondary) mb-4">일상 기록, 생각 정리, 에세이</p>
+  <SubcategoryNav category="essay" />
   {posts.length === 0 ? (
     <p class="text-(--color-text-secondary)">아직 글이 없습니다.</p>
   ) : (

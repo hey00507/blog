@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
+import SubcategoryNav from '../../components/SubcategoryNav.astro';
 import { getCollection } from 'astro:content';
 import { buildSlugMap } from '../../utils/slugs';
 
@@ -30,7 +31,8 @@ for (const [, sp] of seriesMap) {
 
 <BaseLayout title="코딩 - Ethan's Blog" description="기술 학습, 개발 경험, 트러블슈팅">
   <h1 class="text-3xl font-bold mb-2">💻 코딩</h1>
-  <p class="text-(--color-text-secondary) mb-8">기술 학습, 개발 경험, 트러블슈팅</p>
+  <p class="text-(--color-text-secondary) mb-4">기술 학습, 개발 경험, 트러블슈팅</p>
+  <SubcategoryNav category="dev" />
 
   {posts.length === 0 ? (
     <p class="text-(--color-text-secondary)">아직 글이 없습니다.</p>

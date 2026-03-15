@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
+import SubcategoryNav from '../../components/SubcategoryNav.astro';
 import { getCollection } from 'astro:content';
 import { buildSlugMap } from '../../utils/slugs';
 
@@ -18,7 +19,8 @@ const posts = allPosts
       📊 대시보드
     </a>
   </div>
-  <p class="text-(--color-text-secondary) mb-8">책 리뷰, 독후감, 인상 깊은 구절</p>
+  <p class="text-(--color-text-secondary) mb-4">책 리뷰, 독후감, 인상 깊은 구절</p>
+  <SubcategoryNav category="reading" />
   {posts.length === 0 ? (
     <p class="text-(--color-text-secondary)">아직 글이 없습니다.</p>
   ) : (
