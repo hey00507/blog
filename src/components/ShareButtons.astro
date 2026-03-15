@@ -1,0 +1,49 @@
+---
+interface Props {
+  title: string;
+  url: string;
+}
+
+const { title, url } = Astro.props;
+const fullUrl = new URL(url, Astro.site).href;
+const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(fullUrl)}`;
+---
+
+<div class="flex items-center gap-2 mt-6">
+  <span class="text-sm text-(--color-text-secondary)">공유</span>
+  <a
+    href={twitterUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="p-2 rounded-lg border border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors"
+    aria-label="Twitter로 공유"
+  >
+    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  </a>
+  <button
+    id="copy-link-btn"
+    type="button"
+    class="p-2 rounded-lg border border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors cursor-pointer"
+    aria-label="링크 복사"
+    data-url={fullUrl}
+  >
+    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+    </svg>
+  </button>
+  <span id="copy-feedback" class="text-xs text-(--color-text-secondary) opacity-0 transition-opacity duration-300">복사됨!</span>
+</div>
+
+<script is:inline>
+  document.getElementById('copy-link-btn')?.addEventListener('click', async function() {
+    const url = this.dataset.url;
+    await navigator.clipboard.writeText(url);
+    const feedback = document.getElementById('copy-feedback');
+    if (feedback) {
+      feedback.style.opacity = '1';
+      setTimeout(() => { feedback.style.opacity = '0'; }, 2000);
+    }
+  });
+</script>

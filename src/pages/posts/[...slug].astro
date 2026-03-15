@@ -8,6 +8,7 @@ import { buildSlugMap } from '../../utils/slugs';
 import ViewCount from '../../components/ViewCount.astro';
 import Comments from '../../components/Comments.astro';
 import SeriesNav from '../../components/SeriesNav.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -143,6 +144,9 @@ const jsonLd = {
         ))}
       </div>
     )}
+
+    {/* 공유 */}
+    <ShareButtons title={title} url={`/posts/${currentSlug}/`} />
 
     {/* 이전/다음 글 */}
     <nav class="mt-8 pt-6 border-t border-(--color-border) grid grid-cols-1 sm:grid-cols-2 gap-3">
