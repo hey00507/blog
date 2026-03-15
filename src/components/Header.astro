@@ -102,7 +102,9 @@ const currentPath = Astro.url.pathname;
       <button
         id="menu-toggle"
         type="button"
-        aria-label="메뉴"
+        aria-label="메뉴 열기"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
         class="p-2 rounded-lg text-(--color-text-secondary) hover:text-(--color-text) hover:bg-(--color-bg-secondary) transition-colors cursor-pointer"
       >
         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -113,7 +115,7 @@ const currentPath = Astro.url.pathname;
   </nav>
 
   {/* 모바일 메뉴 */}
-  <div id="mobile-menu" class="hidden sm:hidden border-t border-(--color-border) bg-(--color-bg)">
+  <div id="mobile-menu" role="navigation" aria-label="모바일 메뉴" class="hidden sm:hidden border-t border-(--color-border) bg-(--color-bg)">
     <div class="max-w-3xl mx-auto px-4 py-2 flex flex-col">
       {navItems.map(({ label, href, category }) => (
         category && subcategories[category] ? (
@@ -127,6 +129,7 @@ const currentPath = Astro.url.pathname;
                   : 'text-(--color-text-secondary) hover:text-(--color-text) hover:bg-(--color-bg-secondary)',
               ]}
               data-accordion-toggle
+              aria-expanded="false"
             >
               {label}
               <svg class="w-3.5 h-3.5 opacity-50 transition-transform accordion-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -182,14 +185,30 @@ const currentPath = Astro.url.pathname;
 </header>
 
 <script is:inline>
-  document.getElementById('menu-toggle')?.addEventListener('click', () => {
-    document.getElementById('mobile-menu')?.classList.toggle('hidden');
+  const menuToggle = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  menuToggle?.addEventListener('click', () => {
+    const isOpen = mobileMenu?.classList.toggle('hidden') === false;
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+    menuToggle.setAttribute('aria-label', isOpen ? '메뉴 닫기' : '메뉴 열기');
   });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mobileMenu && !mobileMenu.classList.contains('hidden')) {
+      mobileMenu.classList.add('hidden');
+      menuToggle?.setAttribute('aria-expanded', 'false');
+      menuToggle?.setAttribute('aria-label', '메뉴 열기');
+      menuToggle?.focus();
+    }
+  });
+
   document.querySelectorAll('[data-accordion-toggle]').forEach((btn) => {
     btn.addEventListener('click', () => {
       const content = btn.nextElementSibling;
       const chevron = btn.querySelector('.accordion-chevron');
-      if (content) content.classList.toggle('hidden');
+      const isOpen = content?.classList.toggle('hidden') === false;
+      btn.setAttribute('aria-expanded', String(isOpen));
       if (chevron) chevron.classList.toggle('rotate-180');
     });
   });
