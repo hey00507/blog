@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hey00507.github.io/sitemap-index.xml
