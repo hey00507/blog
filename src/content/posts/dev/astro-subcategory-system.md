@@ -4,7 +4,7 @@ description: "Content Collections 스키마 확장과 동적 라우팅으로 소
 category: dev
 subcategory: til
 tags: ["astro", "블로그", "라우팅", "content-collections"]
-pubDate: 2026-03-16T18:00:00
+pubDate: 2026-03-16T09:00:00
 series: "블로그 구축기"
 ---
 
