@@ -2,10 +2,110 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="About - Ethan's Blog" description="Ethan Kim 소개">
-  <h1 class="text-3xl font-bold mb-6">About</h1>
-  <div class="prose dark:prose-invert max-w-none text-(--color-text-secondary) space-y-4">
-    <p>안녕하세요, Ethan입니다.</p>
-    <p>이 블로그에는 읽은 책에 대한 감상, 일상의 기록, 그리고 코딩하며 배운 것들을 적습니다.</p>
+<BaseLayout title="About - Ethan's Blog" description="서비스가 안정적으로 돌아가는 방법을 고민하는 백엔드 개발자">
+  <div class="max-w-2xl">
+    {/* 프로필 */}
+    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-10">
+      <img
+        src="/images/profile.jpeg"
+        alt="Ethan Kim"
+        class="w-32 h-32 rounded-2xl object-cover border-2 border-(--color-border) shrink-0"
+      />
+      <div class="text-center sm:text-left">
+        <h1 class="text-2xl sm:text-3xl font-bold mb-2">Ethan Kim</h1>
+        <p class="text-(--color-text-secondary) leading-relaxed">
+          서비스가 안정적으로 돌아가는 방법을 고민하는 백엔드 개발자.<br />
+          책을 읽고, 달리고, 코드를 씁니다.
+        </p>
+      </div>
+    </div>
+
+    {/* 소개 */}
+    <section class="mb-10">
+      <h2 class="text-xl font-bold mb-4">소개</h2>
+      <div class="space-y-3 text-(--color-text-secondary) leading-relaxed">
+        <p>
+          국제통상을 전공하고 개발의 세계에 뛰어든 백엔드 개발자입니다.
+          비전공자로 시작했지만, 코드를 짜는 일이 재밌어서 여기까지 왔습니다.
+        </p>
+        <p>
+          서비스가 안정적으로 운영될 수 있는 방법을 고민하는 것을 좋아합니다.
+          화려한 기술보다는, 잘 돌아가는 시스템을 만드는 데 관심이 많습니다.
+        </p>
+        <p>
+          이 블로그에는 읽은 책에 대한 생각, 일상의 기록, 그리고 개발하며 배운 것들을 적습니다.
+        </p>
+      </div>
+    </section>
+
+    {/* 관심사 */}
+    <section class="mb-10">
+      <h2 class="text-xl font-bold mb-4">관심사</h2>
+      <div class="space-y-6">
+        <div>
+          <h3 class="font-semibold mb-1">
+            <a href="/reading/" class="hover:text-(--color-accent-reading) transition-colors">📖 독서</a>
+          </h3>
+          <p class="text-(--color-text-secondary) leading-relaxed">
+            AI로 모든 것이 이뤄지는 시대에, 스스로 주체성을 잃지 않는 가장 좋은 방법이 독서라고 생각합니다.
+            엄청 즐긴다고 말하기엔 아직 민망하지만, 독서의 중요성을 깨닫고 꾸준히 노력 중입니다.
+            2026년에는 30권 이상 읽겠다는 개인적인 목표가 있습니다.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-semibold mb-1">
+            <a href="/essay/workout/" class="hover:text-(--color-accent-essay) transition-colors">🏃 러닝</a>
+          </h3>
+          <p class="text-(--color-text-secondary) leading-relaxed">
+            건강해지려고 시작한 취미입니다. 선천적으로 헬스 같은 근력운동을 좋아하지 않았는데,
+            러닝은 저에게 가장 맞는 운동인 것 같습니다.
+            정신건강에도 큰 도움이 되고, 무엇보다 정직한 운동이라는 점이 좋습니다.
+            노력한 만큼 효과가 바로 나타나니까요.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-semibold mb-1">
+            <a href="/dev/" class="hover:text-(--color-accent-dev) transition-colors">💻 코딩</a>
+          </h3>
+          <p class="text-(--color-text-secondary) leading-relaxed">
+            재밌어서 시작했고, 재밌는 것이 업이라 행복했는데 — AI와 함께 코딩하면서 그 재미가 잠시 식었던 것 같습니다.
+            요즘은 AI를 활용한 생산성 높이기에 진심입니다.
+            그만큼의 잉여시간을 다른 곳에 집중할 수 있다는 게 매력적이고, 앞으로 나아가야 할 방향이라고 생각합니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* 연락처 */}
+    <section>
+      <h2 class="text-xl font-bold mb-4">연락처</h2>
+      <div class="flex flex-wrap gap-3">
+        <a
+          href="https://github.com/hey00507"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-(--color-border) text-sm text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors"
+        >
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>
+          GitHub
+        </a>
+        <a
+          href="https://instagram.com/kimjonggu__"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-(--color-border) text-sm text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors"
+        >
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" /></svg>
+          Instagram
+        </a>
+        <a
+          href="mailto:hey0507@gmail.com"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-(--color-border) text-sm text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+          Email
+        </a>
+      </div>
+    </section>
   </div>
 </BaseLayout>
