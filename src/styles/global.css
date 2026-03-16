@@ -45,6 +45,19 @@
     background-color: var(--shiki-dark-bg) !important;
   }
 
+  /* 코드 블록 내부 라인/보더 제거 */
+  .astro-code,
+  .astro-code code {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .astro-code .line::before,
+  .astro-code .line::after {
+    display: none !important;
+  }
+
   /* 포커스 링 — 키보드 네비게이션 시에만 표시 (WCAG AA) */
   :focus-visible {
     outline: 2px solid var(--color-accent-dev);
