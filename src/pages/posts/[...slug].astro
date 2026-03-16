@@ -9,6 +9,7 @@ import ViewCount from '../../components/ViewCount.astro';
 import Comments from '../../components/Comments.astro';
 import SeriesNav from '../../components/SeriesNav.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
+import { extractFirstImage } from '../../utils/thumbnail';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -37,13 +38,15 @@ const currentIndex = allPosts.findIndex((p) => p.id === post.id);
 const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
 const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
 const currentSlug = slugMap.get(post.id)!;
+const bodyImage = extractFirstImage(post.body);
+const ogImage = bodyImage || `/og/${currentSlug}.png`;
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
   headline: title,
   description,
-  image: `${Astro.site}og/${currentSlug}.png`,
+  image: bodyImage ? new URL(bodyImage, Astro.site).href : `${Astro.site}og/${currentSlug}.png`,
   datePublished: pubDate.toISOString(),
   ...(updatedDate && { dateModified: updatedDate.toISOString() }),
   author: {
@@ -69,7 +72,7 @@ const jsonLd = {
 };
 ---
 
-<BaseLayout title={`${title} - Ethan's Blog`} description={description} ogImage={`/og/${currentSlug}.png`}>
+<BaseLayout title={`${title} - Ethan's Blog`} description={description} ogImage={ogImage}>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
   <article>
     {/* 메타 정보 */}
