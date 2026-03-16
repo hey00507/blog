@@ -11,6 +11,7 @@ import SeriesNav from '../../components/SeriesNav.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import RelatedPosts from '../../components/RelatedPosts.astro';
 import { extractFirstImage } from '../../utils/thumbnail';
+import { getPublishedPosts } from '../../utils/posts';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -31,8 +32,7 @@ const updatedStr = updatedDate ? formatDateTime(updatedDate) : undefined;
 const tocHeadings = headings.filter((h) => h.depth <= 3);
 
 // 이전/다음 글
-const allPosts = (await getCollection('posts'))
-  .filter((p) => !p.data.draft)
+const allPosts = (await getPublishedPosts())
   .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
 const slugMap = buildSlugMap(allPosts);
 const currentIndex = allPosts.findIndex((p) => p.id === post.id);

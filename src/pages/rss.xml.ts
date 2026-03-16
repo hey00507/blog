@@ -1,10 +1,11 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
+import { getPublishedPosts } from '../utils/posts';
 import { buildSlugMap } from '../utils/slugs';
 import type { APIContext } from 'astro';
 
 export async function GET(context: APIContext) {
-  const allPosts = (await getCollection('posts')).filter((p) => !p.data.draft);
+  const allPosts = await getPublishedPosts();
   const slugMap = buildSlugMap(allPosts);
   const posts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 

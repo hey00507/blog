@@ -2,10 +2,11 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PostCard from '../../../components/PostCard.astro';
 import { getCollection } from 'astro:content';
+import { getPublishedPosts } from '../../../utils/posts';
 import { buildSlugMap } from '../../../utils/slugs';
 
 export async function getStaticPaths() {
-  const allPosts = (await getCollection('posts')).filter((p) => !p.data.draft);
+  const allPosts = await getPublishedPosts();
   const slugMap = buildSlugMap(allPosts);
   const seriesPosts = allPosts.filter((p) => p.data.series);
 

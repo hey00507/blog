@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { getPublishedPosts } from '../utils/posts';
 import { buildSlugMap } from '../utils/slugs';
 
 interface Props {
@@ -9,7 +10,7 @@ interface Props {
 
 const { series, currentId } = Astro.props;
 
-const allPosts = (await getCollection('posts')).filter((p) => !p.data.draft);
+const allPosts = await getPublishedPosts();
 const slugMap = buildSlugMap(allPosts);
 const seriesPosts = allPosts
   .filter((p) => p.data.series === series)

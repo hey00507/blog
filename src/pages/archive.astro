@@ -1,12 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { getPublishedPosts } from '../utils/posts';
 import { categories } from '../utils/categories';
 import { getSubcategoryLabel } from '../utils/subcategories';
 import { formatMonthDay } from '../utils/formatDate';
 import { buildSlugMap } from '../utils/slugs';
 
-const allPosts = (await getCollection('posts')).filter((p) => !p.data.draft);
+const allPosts = await getPublishedPosts();
 const slugMap = buildSlugMap(allPosts);
 const posts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 

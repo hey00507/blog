@@ -1,9 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { getPublishedPosts } from '../../utils/posts';
 import { buildSlugMap } from '../../utils/slugs';
 
-const allPosts = (await getCollection('posts')).filter((p) => !p.data.draft);
+const allPosts = await getPublishedPosts();
 const slugMap = buildSlugMap(allPosts);
 const books = allPosts
   .filter((p) => p.data.category === 'reading')

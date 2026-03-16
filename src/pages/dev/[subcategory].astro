@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
 import SubcategoryNav from '../../components/SubcategoryNav.astro';
 import { getCollection } from 'astro:content';
+import { getPublishedPosts } from '../../utils/posts';
 import { buildSlugMap } from '../../utils/slugs';
 import { subcategories, getSubcategoryLabel } from '../../utils/subcategories';
 import { categories } from '../../utils/categories';
@@ -19,7 +20,7 @@ const { subcategory } = Astro.params;
 const subLabel = getSubcategoryLabel(category, subcategory!)!;
 const catLabel = categories[category].label;
 
-const allPosts = (await getCollection('posts')).filter((p) => !p.data.draft);
+const allPosts = await getPublishedPosts();
 const slugMap = buildSlugMap(allPosts);
 const posts = allPosts
   .filter((p) => p.data.category === category && p.data.subcategory === subcategory)

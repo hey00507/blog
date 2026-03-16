@@ -1,5 +1,6 @@
 import type { APIContext } from 'astro';
 import { getCollection } from 'astro:content';
+import { getPublishedPosts } from '../../utils/posts';
 import { buildSlugMap } from '../../utils/slugs';
 import { formatDate } from '../../utils/formatDate';
 import satori from 'satori';
@@ -30,7 +31,7 @@ const fontPath = path.resolve(process.cwd(), 'src/assets/fonts/NotoSansKR-Bold.t
 const fontData = fs.readFileSync(fontPath);
 
 export async function getStaticPaths() {
-  const posts = (await getCollection('posts')).filter((p) => !p.data.draft);
+  const posts = await getPublishedPosts();
   const slugMap = buildSlugMap(posts);
   return posts.map((post) => ({
     params: { slug: slugMap.get(post.id)! },
