@@ -472,10 +472,10 @@ export const subcategories = {
 
 **체크리스트:**
 - [x] RelatedPosts 컴포넌트 (태그 유사도 기반 추천) ✅
-- [ ] heroImage 필드 추가 (content.config.ts + PostCard + 상세 페이지)
+- [x] heroImage 필드 추가 (content.config.ts + PostCard + 상세 페이지) ✅
 - [x] robots.txt 추가 (public/) ✅
 - [x] 코드 블록 복사 버튼 (글 상세 페이지에 JS 삽입) ✅
-- [ ] 페이지네이션 컴포넌트 (글 20개 이상 시 적용)
+- [x] 페이지네이션 (Astro paginate, 10개/페이지) ✅
 
 #### Long-Term
 
