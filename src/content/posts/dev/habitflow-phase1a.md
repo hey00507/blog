@@ -3,7 +3,7 @@ title: "HabitFlow — SwiftUI + Firebase로 습관 트래커 만들기 (Phase 1a
 description: "Swift를 처음 써보면서 하루 만에 습관 트래커 MVP를 완성한 과정. xcodegen, TDD, Swift 6 Concurrency까지."
 category: dev
 tags: ["swift", "swiftui", "firebase", "tdd", "ios", "xcodegen"]
-pubDate: 2026-03-17T18:00:00
+pubDate: 2026-03-17T10:30:00
 series: "HabitFlow 개발기"
 ---
 
