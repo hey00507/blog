@@ -2,7 +2,7 @@
 title: "의성데이터포털 — 0에서 운영까지, 백엔드 7개월 회고"
 description: "농업 데이터 거버넌스 포털의 백엔드 API 서버를 구축부터 운영까지 담당하며 배운 보안, 아키텍처, 코드 품질에 대한 실전 경험을 정리했다."
 category: dev
-subcategory: project
+subcategory: work
 tags: ["spring-boot", "java", "security", "jpa", "postgresql", "portfolio"]
 pubDate: 2026-03-17T13:22:00
 series: "프로젝트 회고"

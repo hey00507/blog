@@ -2,7 +2,7 @@
 title: "의성데이터포털 기술 회고 — 보안, 아키텍처, 코드 품질의 실전 교훈"
 description: "7개월간 백엔드를 구축하며 겪은 기술 선택, 보안 취약점 대응, 코딩 가이드라인 적용 과정에서 배운 8가지 실전 교훈을 정리했다."
 category: dev
-subcategory: project
+subcategory: work
 tags: ["spring-boot", "java", "security", "jpa", "retrospective", "cwe"]
 pubDate: 2026-02-01T14:30:00
 series: "프로젝트 회고"
