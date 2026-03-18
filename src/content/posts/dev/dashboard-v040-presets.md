@@ -9,17 +9,17 @@ draft: false
 
 [지난 글](/posts/dev/claude-dashboard)에서 Claude Multiple Dashboard의 v0.3.0까지 만든 이야기를 했다. 오늘은 v0.4.0에서 가장 체감이 컸던 기능 — 세션 이름/색상 시스템과 그 자동화 과정을 정리한다.
 
-## 문제: 세션이 3개만 되어도 헷갈린다
+## 문제: 멀티세션은 편한데, 구분이 안 된다
 
-Claude Code를 병렬로 쓰다 보면 터미널 탭이 3~5개 열린다. 대시보드도, 가계부도, 습관 트래커도 전부 "claude"라는 이름으로 돌아가고 있다. 어느 탭이 어떤 프로젝트인지 매번 들어가서 확인해야 했다.
+Claude Code를 병렬로 쓰다 보면 터미널 탭이 3~5개 열린다. 그런데 전부 "Claude Code v2.1.78 / Opus 4.6"이라는 똑같은 헤더를 달고 있다. 어느 탭이 대시보드고, 어느 탭이 가계부인지 하나하나 들어가서 확인해야 한다.
 
-![분할 전 — 세션 구분이 안 되는 상태](/images/posts/dashboard-v040/light-overview.png)
+![3개 세션이 전부 같아 보이는 상태](/images/posts/dashboard-v040/problem-no-labels.png)
 
-## 해결 1단계: 터미널에 이름 붙이기
+## 해결: 터미널에 이름을 박는다
 
-먼저 Claude Code의 **statusline** 기능을 활용했다. Claude Code는 하단에 모델명, 컨텍스트 사용률 등을 표시하는 상태 줄을 커스텀할 수 있다. 여기에 세션 이름과 색상을 넣었다.
+Claude Code의 **statusline**을 커스텀할 수 있다는 걸 활용했다. statusline은 터미널 하단에 모델명, 컨텍스트 사용률 등을 표시하는 상태 줄인데, 여기에 세션 이름과 색상을 넣으면 된다.
 
-`/session-setting`이라는 스킬을 만들어서:
+`/session-setting`이라는 스킬을 만들었다:
 
 ```bash
 /session-setting name:대시보드 color:red
@@ -27,22 +27,24 @@ Claude Code를 병렬로 쓰다 보면 터미널 탭이 3~5개 열린다. 대시
 /session-setting name:습관관리 color:green
 ```
 
-이렇게 치면 터미널 하단에 `[대시보드]`, `[가계부]`처럼 색상 라벨이 붙는다. 이것만으로도 탭 전환할 때 어디가 어딘지 바로 보인다.
+각 터미널에서 한 번씩 쳐주면, 하단에 `[대시보드]`, `[가계부]`처럼 색상 라벨이 붙는다. 이제 탭만 봐도 어디가 어딘지 바로 안다.
 
 ![터미널에 이름/색상이 적용된 모습](/images/posts/dashboard-v040/terminal-sessions.png)
 
-## 해결 2단계: 대시보드에도 동일하게 적용
+## 대시보드에도 똑같이 적용
 
-터미널에서 이름을 붙이는 건 좋은데, 대시보드에서는 여전히 기본 프로젝트명만 보인다. `/session-setting`으로 설정한 이름과 색상이 대시보드 세션 카드에도 그대로 반영되게 하고 싶었다.
+터미널은 해결됐는데, 대시보드는 여전히 기본 프로젝트명만 표시하고 있었다.
 
-이를 위해 스킬이 실행될 때 두 가지를 동시에 업데이트하도록 만들었다:
+![대시보드 — 이름/색상 적용 전](/images/posts/dashboard-v040/light-overview.png)
+
+`/session-setting`에서 설정한 이름과 색상이 대시보드에도 그대로 반영되게 했다. 스킬이 실행될 때 두 곳을 동시에 업데이트한다:
 
 1. `/tmp` 파일에 저장 → statusline이 읽어서 터미널에 표시
 2. `~/.claude-dashboard/sessions/{id}.json`을 원자적으로 수정 → 대시보드에 반영
 
-대시보드 쪽에서는 Session 타입에 `color` 필드를 추가하고, CSS `data-color` attribute로 세션 카드에 색상 틴트를 입혔다. 왼쪽에 3px 컬러 바 + 배경에 8% 투명도 색상. 다크/라이트 테마 모두 자연스럽게 보인다.
+대시보드 세션 카드에는 왼쪽에 3px 컬러 바 + 배경에 은은한 색상 틴트를 입혔다.
 
-![대시보드에 세션 색상이 적용된 모습](/images/posts/dashboard-v040/session-colors.png)
+![대시보드 — 이름/색상 적용 후](/images/posts/dashboard-v040/session-colors.png)
 
 ## 해결 3단계: 매번 치기 귀찮다 — 프리셋 자동화
 
