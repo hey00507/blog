@@ -1,90 +1,75 @@
 ---
 title: "Claude Dashboard v0.4.0 — 세션 프리셋과 3-tier Fallback"
-description: "macOS에서 Claude 프로세스를 세션별로 구분하는 삽질기, 세션 색상 시스템, 그리고 컨텍스트 압축에도 살아남는 3-tier fallback 설계"
+description: "여러 세션을 구분하기 위한 이름/색상 시스템, 대시보드 연동, 그리고 컨텍스트 압축에도 살아남는 3-tier fallback 설계"
 category: "dev"
 pubDate: "2026-03-18T01:20:00.000Z"
 tags: ["claude-code", "typescript", "fastify", "macos", "process-detection", "statusline"]
 draft: false
 ---
 
-[지난 글](/posts/dev/claude-dashboard)에서 Claude Multiple Dashboard의 v0.3.0까지 만든 이야기를 했다. 오늘은 v0.4.0 안정화 과정에서 겪은 기술적 문제들과, 세션 프리셋 자동화 시스템을 설계한 과정을 정리한다.
+[지난 글](/posts/dev/claude-dashboard)에서 Claude Multiple Dashboard의 v0.3.0까지 만든 이야기를 했다. 오늘은 v0.4.0에서 가장 체감이 컸던 기능 — 세션 이름/색상 시스템과 그 자동화 과정을 정리한다.
 
-## macOS에서 Claude 프로세스 추적이 어려운 이유
+## 문제: 세션이 3개만 되어도 헷갈린다
 
-대시보드의 process scanner는 30초마다 `ps`로 Claude 프로세스를 확인하고, 죽은 세션을 정리한다. 문제는 **어떤 프로세스가 어떤 세션인지** 구분하는 것이었다.
+Claude Code를 병렬로 쓰다 보면 터미널 탭이 3~5개 열린다. 대시보드도, 가계부도, 습관 트래커도 전부 "claude"라는 이름으로 돌아가고 있다. 어느 탭이 어떤 프로젝트인지 매번 들어가서 확인해야 했다.
 
-### 시도 1: lsof로 cwd 매칭 — 실패
+![분할 전 — 세션 구분이 안 되는 상태](/images/posts/dashboard-v040/light-overview.png)
+
+## 해결 1단계: 터미널에 이름 붙이기
+
+먼저 Claude Code의 **statusline** 기능을 활용했다. Claude Code는 하단에 모델명, 컨텍스트 사용률 등을 표시하는 상태 줄을 커스텀할 수 있다. 여기에 세션 이름과 색상을 넣었다.
+
+`/session-setting`이라는 스킬을 만들어서:
 
 ```bash
-lsof -a -d cwd -p 27448,27461,28876 -Fp -Fn
+/session-setting name:대시보드 color:red
+/session-setting name:가계부 color:blue
+/session-setting name:습관관리 color:green
 ```
 
-결과:
-```
-p27448 → n/Users/ethankim
-p27461 → n/Users/ethankim
-p28876 → n/Users/ethankim
-```
+이렇게 치면 터미널 하단에 `[대시보드]`, `[가계부]`처럼 색상 라벨이 붙는다. 이것만으로도 탭 전환할 때 어디가 어딘지 바로 보인다.
 
-모든 Claude 프로세스의 cwd가 홈 디렉토리(`~/`)다. Claude Code는 프로젝트 디렉토리가 아니라 홈에서 실행되기 때문이다. 세션 구분 불가.
+![터미널에 이름/색상이 적용된 모습](/images/posts/dashboard-v040/terminal-sessions.png)
 
-### 시도 2: transcript 파일 lsof — 실패
+## 해결 2단계: 대시보드에도 동일하게 적용
 
-Claude Code가 transcript `.jsonl` 파일을 열고 있을 거라 생각했지만, 원자적 쓰기(open-write-close)를 하기 때문에 `lsof`에 안 잡힌다.
+터미널에서 이름을 붙이는 건 좋은데, 대시보드에서는 여전히 기본 프로젝트명만 보인다. `/session-setting`으로 설정한 이름과 색상이 대시보드 세션 카드에도 그대로 반영되게 하고 싶었다.
 
-### 최종 해결: PID 수 비교 + transcript mtime 랭킹
+이를 위해 스킬이 실행될 때 두 가지를 동시에 업데이트하도록 만들었다:
 
-발상을 바꿨다. 프로세스를 세션에 1:1 매핑하는 대신, **수량 비교**로 접근했다.
+1. `/tmp` 파일에 저장 → statusline이 읽어서 터미널에 표시
+2. `~/.claude-dashboard/sessions/{id}.json`을 원자적으로 수정 → 대시보드에 반영
 
-```
-top-level Claude PID 수 >= 활성 세션 수 → 모든 세션 alive
-top-level Claude PID 수 < 활성 세션 수 → transcript mtime로 순위 매기고 오래된 것부터 정리
-```
+대시보드 쪽에서는 Session 타입에 `color` 필드를 추가하고, CSS `data-color` attribute로 세션 카드에 색상 틴트를 입혔다. 왼쪽에 3px 컬러 바 + 배경에 8% 투명도 색상. 다크/라이트 테마 모두 자연스럽게 보인다.
 
-서브에이전트(Claude가 Agent tool로 생성한 자식 프로세스)는 parent PID가 다른 Claude인 것으로 필터링한다.
+![대시보드에 세션 색상이 적용된 모습](/images/posts/dashboard-v040/session-colors.png)
 
-![멀티 터미널 세션](/images/posts/dashboard-v040/terminal-sessions.png)
+## 해결 3단계: 매번 치기 귀찮다 — 프리셋 자동화
 
-여기에 **disconnected 유예 기간**을 추가했다. 한 번의 스캔으로 바로 ended 처리하지 않고, 먼저 `disconnected` 상태로 전환 → 다음 스캔(30초 후)에서도 여전히 매칭 안 되면 그때 `ended`로 에스컬레이션한다. 네트워크 지연이나 일시적 부하로 인한 오탐을 방지하기 위해서다.
+문제가 하나 남았다. 세션을 열 때마다 `/session-setting`을 쳐야 한다는 것. 같은 프로젝트에서 매번 같은 이름/색상을 쓰는데.
 
-## 세션 색상 시스템
+`--save` 플래그를 추가했다:
 
-![작업 전](/images/posts/dashboard-v040/light-overview.png)
-
-위 스크린샷처럼, 세션이 3개만 되어도 어디가 어딘지 헷갈린다. 세션 카드에 색상을 입히기로 했다.
-
-### CSS data-attribute 방식
-
-inline style 대신 `data-color` attribute를 사용했다.
-
-```css
-.session-card[data-color="red"]   { background: rgba(239, 68, 68, 0.08); border-left: 3px solid #ef4444; }
-.session-card[data-color="blue"]  { background: rgba(59, 130, 246, 0.08); border-left: 3px solid #3b82f6; }
+```bash
+/session-setting name:대시보드 color:red --save
 ```
 
-이렇게 하면 다크/라이트 테마별 투명도를 CSS에서 독립적으로 관리할 수 있고, JS에서는 `data-color="red"`만 넣으면 된다.
-
-![세션 색상 적용 후](/images/posts/dashboard-v040/session-colors.png)
-
-## 세션 프리셋: `/session-setting --save`
-
-매번 세션을 열 때마다 `/session-setting name:대시보드 color:red`를 치는 건 번거롭다. 프로젝트 디렉토리별로 기본값을 저장해두면 자동으로 적용되게 만들었다.
+이러면 현재 디렉토리를 `config.json`의 `sessionDefaults`에 저장한다. 다음에 같은 디렉토리에서 세션이 시작되면 서버가 자동으로 이름/색상을 적용한다.
 
 ```json
-// ~/.claude-dashboard/config.json
 {
   "sessionDefaults": {
     "/Users/me/dashboard": { "name": "대시보드", "color": "red" },
-    "/Users/me/cloudpocket": { "name": "CloudPocket", "color": "blue" }
+    "/Users/me/cloudpocket": { "name": "가계부", "color": "blue" }
   }
 }
 ```
 
-서버의 `handleEvent`에서 `SessionStart` 이벤트를 받으면 `cwd`를 매칭해서 자동 적용한다. 단, 홈 디렉토리(`~/`)같은 범용 경로는 제외 — 여러 세션이 같은 cwd를 가질 수 있으니까.
+단, 홈 디렉토리(`~/`)같은 범용 경로는 매칭에서 제외한다. 여러 세션이 같은 `~/`에서 열릴 수 있기 때문이다.
 
 ## 3-tier Fallback: 컨텍스트 압축에도 살아남기
 
-Claude Code는 컨텍스트가 가득 차면 자동으로 압축(compaction)한다. 이때 `/tmp` 파일이 유실될 수 있다. 세션 이름/색상이 날아가는 문제를 해결하기 위해 3단계 fallback을 설계했다.
+Claude Code는 대화가 길어지면 컨텍스트를 자동 압축한다. 이때 `/tmp` 파일이 유실될 수 있다. 세션 이름이 갑자기 사라지는 문제를 해결하기 위해 3단계 fallback을 설계했다.
 
 ```
 statusline.sh 실행
@@ -93,7 +78,21 @@ statusline.sh 실행
   └─ Tier 3: config.json sessionDefaults  ← 프로젝트 기본값
 ```
 
-핵심은 Tier 2에서 `/tmp` 파일을 **자가 복구**하는 것이다. Tier 2에서 대시보드 JSON을 읽으면, 동시에 `/tmp` 파일을 다시 생성한다. 다음 호출부터는 다시 Tier 1(빠른 경로)로 돌아간다.
+Tier 2에서 읽으면 동시에 `/tmp` 파일을 복원한다. 다음 호출부터는 다시 Tier 1(빠른 경로)로 돌아간다. 자가 복구 구조.
+
+## macOS에서 프로세스 감지가 어려운 이유
+
+안정화 과정에서 하나 더 해결한 문제가 있다. process scanner가 "이 세션이 아직 살아있는가?"를 판단하는 로직이다.
+
+`lsof -d cwd`로 각 Claude 프로세스의 작업 디렉토리를 가져와서 세션과 매칭하려 했는데, macOS에서는 모든 Claude 프로세스가 `~/`를 cwd로 보고한다. 세션 구분 불가.
+
+결국 **PID 수량 비교 + transcript 파일 수정 시각 랭킹**으로 해결했다:
+
+- top-level PID 수 >= 세션 수 → 전부 alive
+- PID < 세션 → transcript mtime이 오래된 세션부터 `disconnected` 처리
+- 30초 후에도 여전하면 `ended`로 에스컬레이션
+
+서브에이전트(Claude가 Agent tool로 생성)는 parent PID가 다른 Claude인 것으로 필터링해서 카운트에서 제외한다.
 
 ## 테스트
 
