@@ -18,6 +18,7 @@ const posts = defineCollection({
     rating: z.number().min(1).max(5).optional(),
     // 공통 선택
     heroImage: z.string().optional(),
+    heroImageOnly: z.boolean().default(false), // true면 PostCard 썸네일로만 사용, 본문에선 숨김
     // 코딩 카테고리 전용
     series: z.string().optional(),
   }),

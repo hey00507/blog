@@ -70,10 +70,7 @@ draft: false
 - **본문에 영상만 있는 경우** (이미지 없음):
   - 영상에서 중요해 보이는 장면을 캡처하여 썸네일 생성: `ffmpeg -i video.mp4 -vframes 1 -q:v 2 thumbnail.jpeg`
   - `heroImage`에 캡처 이미지 경로 지정
-  - 본문에는 썸네일 `<img>`를 `display:none` 처리하여 영상만 보이게 유지:
-    ```html
-    <img src="/images/.../thumb.jpeg" alt="..." style="display:none;" />
-    ```
+  - frontmatter에 `heroImageOnly: true` 추가 → PostCard 썸네일로만 사용, 본문에서는 자동 숨김
   - PostCard에서는 `heroImage`로 썸네일 표시, 본문에서는 영상만 보임
 
 - **본문에 이미지 + 영상이 함께 있는 경우**:
