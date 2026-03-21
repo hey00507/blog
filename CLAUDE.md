@@ -63,8 +63,22 @@ draft: false
 ## PostCard 썸네일
 
 - 블로그 PostCard에 썸네일이 표시됨 (본문 첫 `<img>` 또는 `heroImage`)
-- 영상만 있는 글은 썸네일이 깨짐 → 반드시 영상 캡처 이미지를 본문 상단에 추가
 - 다른 레포/외부 URL 이미지를 참조하면 빌드 시 깨질 수 있음 → 반드시 `public/images/` 내부 경로 사용
+
+### 영상 글의 썸네일 처리
+
+- **본문에 영상만 있는 경우** (이미지 없음):
+  - 영상에서 중요해 보이는 장면을 캡처하여 썸네일 생성: `ffmpeg -i video.mp4 -vframes 1 -q:v 2 thumbnail.jpeg`
+  - `heroImage`에 캡처 이미지 경로 지정
+  - 본문에는 썸네일 `<img>`를 `display:none` 처리하여 영상만 보이게 유지:
+    ```html
+    <img src="/images/.../thumb.jpeg" alt="..." style="display:none;" />
+    ```
+  - PostCard에서는 `heroImage`로 썸네일 표시, 본문에서는 영상만 보임
+
+- **본문에 이미지 + 영상이 함께 있는 경우**:
+  - 별도 지정이 없으면 **첫 번째 이미지**를 `heroImage`(썸네일)로 지정
+  - 본문에 이미지가 자연스럽게 보이므로 `display:none` 불필요
 
 ## 글 분리 원칙
 
