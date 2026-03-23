@@ -1,5 +1,8 @@
 # Blog Writing Rules
 
+> **글 문체/톤/표현 규칙은 [WRITING_STYLE.md](./WRITING_STYLE.md)를 반드시 참조한다.**
+> 이 파일은 구조(카테고리, frontmatter, 이미지 경로, 영상)만 다루고, 글쓰기 스타일은 WRITING_STYLE.md에서 관리한다.
+
 ## 카테고리 & 소카테고리
 
 | category | subcategory | slug | 용도 |
@@ -31,13 +34,13 @@ description: "1~2줄 설명"
 category: "essay"          # essay, dev, reading 중 택 1
 subcategory: "workout"     # 소카테고리 (위 표 참조)
 tags: ["태그1", "태그2"]
-pubDate: 2026-03-21T21:30:00  # 반드시 현재 시각 기준 (미래 시간 X)
+pubDate: 2026-03-21T21:30:00  # 반드시 현재 시각의 시·분·초까지 정확히 맞출 것
 updatedDate: 2026-03-23T10:00:00  # 기존 글 수정 시 추가 (선택)
 draft: false
 ---
 ```
 
-- `pubDate`는 항상 **현재 시각 이전**으로 설정 (미래 시간이면 글이 안 보임)
+- `pubDate`는 반드시 **글 작성 시점의 현재 시각**(시·분·초)을 `date` 명령으로 확인하여 설정 (미래 시간이면 글이 안 보임, 임의의 시간 금지)
 - `subcategory`는 반드시 위 표의 slug 값 사용
 - `updatedDate`는 기존 글을 수정할 때 추가 — sitemap lastmod에 반영되어 검색엔진이 변경을 감지
 
@@ -52,6 +55,7 @@ draft: false
 - HEIC/PNG → JPEG 변환: `sips -s format jpeg`
 - 크기 제한: 원본 대신 적절한 `max-width` 지정 (보통 200~350px)
 - alt 텍스트: 반드시 의미 있는 설명 포함
+- 이미지 주석(캡션): WRITING_STYLE.md의 "이미지 주석" 섹션 참조
 - WebP 자동 변환: 빌드 시 `scripts/generate-webp.mjs`가 jpg/jpeg/png → webp 자동 생성. 원본만 커밋하면 됨 (webp는 .gitignore)
 
 ## 영상 규칙
