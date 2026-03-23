@@ -32,12 +32,14 @@ category: "essay"          # essay, dev, reading 중 택 1
 subcategory: "workout"     # 소카테고리 (위 표 참조)
 tags: ["태그1", "태그2"]
 pubDate: 2026-03-21T21:30:00  # 반드시 현재 시각 기준 (미래 시간 X)
+updatedDate: 2026-03-23T10:00:00  # 기존 글 수정 시 추가 (선택)
 draft: false
 ---
 ```
 
 - `pubDate`는 항상 **현재 시각 이전**으로 설정 (미래 시간이면 글이 안 보임)
 - `subcategory`는 반드시 위 표의 slug 값 사용
+- `updatedDate`는 기존 글을 수정할 때 추가 — sitemap lastmod에 반영되어 검색엔진이 변경을 감지
 
 ## 이미지 규칙
 
