@@ -7,9 +7,10 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  showProgress?: boolean;
 }
 
-const { title, description = "Ethan's personal blog", ogImage } = Astro.props;
+const { title, description = "Ethan's personal blog", ogImage, showProgress = false } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
 ---
@@ -59,11 +60,31 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
   </head>
   <body class="min-h-screen flex flex-col">
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-(--color-accent-dev) focus:text-white focus:text-sm">본문으로 건너뛰기</a>
+    {showProgress && <div id="reading-progress" class="fixed top-0 left-0 h-0.5 bg-(--color-accent-dev) z-[100] transition-none" style="width: 0%" />}
     <Header />
     <main id="main-content" class="flex-1 max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-10 w-full">
       <slot />
     </main>
     <Footer />
+    {showProgress && (
+      <script is:inline>
+        (function() {
+          const bar = document.getElementById('reading-progress');
+          if (!bar) return;
+          let ticking = false;
+          window.addEventListener('scroll', function() {
+            if (!ticking) {
+              requestAnimationFrame(function() {
+                const h = document.documentElement.scrollHeight - window.innerHeight;
+                bar.style.width = h > 0 ? Math.min(100, (window.scrollY / h) * 100) + '%' : '0%';
+                ticking = false;
+              });
+              ticking = true;
+            }
+          });
+        })();
+      </script>
+    )}
     <button id="back-to-top" aria-label="맨 위로" class="fixed bottom-6 right-6 w-10 h-10 rounded-full bg-(--color-bg-secondary) border border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-all opacity-0 pointer-events-none shadow-md flex items-center justify-center z-50">
       <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
     </button>

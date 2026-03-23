@@ -7,6 +7,7 @@ interface Props {
 const { title, url } = Astro.props;
 const fullUrl = new URL(url, Astro.site).href;
 const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(fullUrl)}`;
+const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fullUrl)}`;
 ---
 
 <div class="flex items-center gap-2 mt-6">
@@ -16,12 +17,35 @@ const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(t
     target="_blank"
     rel="noopener noreferrer"
     class="p-2 rounded-lg border border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors"
-    aria-label="Twitter로 공유"
+    aria-label="X(Twitter)로 공유"
   >
     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
       <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
     </svg>
   </a>
+  <a
+    href={facebookUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="p-2 rounded-lg border border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors"
+    aria-label="Facebook으로 공유"
+  >
+    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+    </svg>
+  </a>
+  <button
+    id="kakao-share-btn"
+    type="button"
+    class="p-2 rounded-lg border border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors cursor-pointer"
+    aria-label="카카오톡으로 공유"
+    data-url={fullUrl}
+    data-title={title}
+  >
+    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 3C6.477 3 2 6.463 2 10.691c0 2.727 1.818 5.117 4.545 6.463-.2.745-.727 2.709-.832 3.127-.127.518.19.509.4.372.163-.109 2.6-1.745 3.654-2.454.4.054.809.082 1.233.082 5.523 0 10-3.463 10-7.691S17.523 3 12 3z" />
+    </svg>
+  </button>
   <button
     id="copy-link-btn"
     type="button"
@@ -44,6 +68,21 @@ const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(t
     if (feedback) {
       feedback.style.opacity = '1';
       setTimeout(() => { feedback.style.opacity = '0'; }, 2000);
+    }
+  });
+
+  document.getElementById('kakao-share-btn')?.addEventListener('click', function() {
+    const url = this.dataset.url;
+    const title = this.dataset.title;
+    if (navigator.share) {
+      navigator.share({ title: title, url: url });
+    } else {
+      navigator.clipboard.writeText(url);
+      const feedback = document.getElementById('copy-feedback');
+      if (feedback) {
+        feedback.style.opacity = '1';
+        setTimeout(() => { feedback.style.opacity = '0'; }, 2000);
+      }
     }
   });
 </script>

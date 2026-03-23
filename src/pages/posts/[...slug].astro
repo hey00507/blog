@@ -83,7 +83,7 @@ const jsonLd = {
 };
 ---
 
-<BaseLayout title={`${title} - Ethan's Blog`} description={description} ogImage={ogImage}>
+<BaseLayout title={`${title} - Ethan's Blog`} description={description} ogImage={ogImage} showProgress>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} slot="head" />
   <article>
