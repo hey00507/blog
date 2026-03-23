@@ -4,7 +4,7 @@ description: "Gemini로 관리하던 식단과 러닝 기록을 Claude + Obsidia
 category: "dev"
 subcategory: "project"
 tags: ["claude-code", "obsidian", "health", "러닝", "생산성"]
-pubDate: 2026-03-23T23:00:00
+pubDate: 2026-03-23T22:30:00
 series: "Claude Productivity"
 ---
 
