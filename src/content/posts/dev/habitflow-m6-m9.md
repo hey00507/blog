@@ -23,10 +23,10 @@ draft: false
 
 targetTime이 없는 습관(시간 상관없이 해야 하는 것)은 종합 알림에만 포함시켰다.
 
-<div style="display: flex; justify-content: center; gap: 12px; margin: 24px 0;">
-  <img src="/images/posts/habitflow-m6m9/today-view.jpeg" alt="오늘 화면 — 습관 등록" width="200" />
-  <img src="/images/posts/habitflow-m6m9/settings-notification.jpeg" alt="설정 — 알림 옵션" width="200" />
-  <img src="/images/posts/habitflow-m6m9/notification-lockscreen.jpeg" alt="잠금화면에 알림 도착" width="200" />
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 24px 0;">
+  <img src="/images/posts/habitflow-m6m9/today-view.jpeg" alt="오늘 화면 — 습관 등록" style="max-width: 200px; width: 100%;" />
+  <img src="/images/posts/habitflow-m6m9/settings-notification.jpeg" alt="설정 — 알림 옵션" style="max-width: 200px; width: 100%;" />
+  <img src="/images/posts/habitflow-m6m9/notification-lockscreen.jpeg" alt="잠금화면에 알림 도착" style="max-width: 200px; width: 100%;" />
 </div>
 
 ## iOS 알림 64개 제한

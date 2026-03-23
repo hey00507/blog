@@ -10,13 +10,13 @@ const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(t
 const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fullUrl)}`;
 ---
 
-<div class="flex items-center gap-2 mt-6">
+<div class="flex flex-wrap items-center gap-2 mt-6">
   <span class="text-sm text-(--color-text-secondary)">공유</span>
   <a
     href={twitterUrl}
     target="_blank"
     rel="noopener noreferrer"
-    class="p-2 rounded-lg border border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors"
+    class="p-2.5 rounded-lg border border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors"
     aria-label="X(Twitter)로 공유"
   >
     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -27,7 +27,7 @@ const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURICom
     href={facebookUrl}
     target="_blank"
     rel="noopener noreferrer"
-    class="p-2 rounded-lg border border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors"
+    class="p-2.5 rounded-lg border border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors"
     aria-label="Facebook으로 공유"
   >
     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -37,7 +37,7 @@ const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURICom
   <button
     id="kakao-share-btn"
     type="button"
-    class="p-2 rounded-lg border border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors cursor-pointer"
+    class="p-2.5 rounded-lg border border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors cursor-pointer"
     aria-label="카카오톡으로 공유"
     data-url={fullUrl}
     data-title={title}
@@ -49,7 +49,7 @@ const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURICom
   <button
     id="copy-link-btn"
     type="button"
-    class="p-2 rounded-lg border border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors cursor-pointer"
+    class="p-2.5 rounded-lg border border-(--color-border) text-(--color-text-secondary) hover:text-(--color-text) hover:border-(--color-text-secondary) transition-colors cursor-pointer"
     aria-label="링크 복사"
     data-url={fullUrl}
   >

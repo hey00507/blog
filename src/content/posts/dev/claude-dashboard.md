@@ -61,7 +61,7 @@ Claude Code 세션 → hook event (JSON)
 
 시스템 설정을 자동 감지하고, 수동 토글도 가능하다. `j`/`k`로 세션을 탐색하고, `/`로 검색, `?`로 단축키 도움말을 볼 수 있다.
 
-<img src="/images/posts/claude-dashboard/shortcuts.png" width="300" alt="키보드 단축키">
+<img src="/images/posts/claude-dashboard/shortcuts.png" style="max-width: 300px; width: 100%;" alt="키보드 단축키">
 
 ## 설치 (3줄)
 
