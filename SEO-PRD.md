@@ -116,7 +116,7 @@ astro.config.mjs
 | # | 작업 | 수정 파일 | 상세 |
 |---|------|-----------|------|
 | 4-1 | ~~Cache-Control 개선~~ | `BaseLayout.astro` | ✅ 완료 — no-cache 메타 태그 3줄 제거 |
-| 4-2 | 이미지 alt 텍스트 | 개별 포스트 + 컴포넌트 | 추후 — PostCard 등 빈 alt 보완 |
+| 4-2 | ~~이미지 alt 텍스트~~ | 개별 포스트 + 컴포넌트 | ✅ 확인 완료 — 전 포스트 alt 정상 적용 |
 
 ### Cache-Control 상세
 
