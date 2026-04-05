@@ -72,6 +72,13 @@ draft: false
 - 블로그 PostCard에 썸네일이 표시됨 (본문 첫 `<img>` 또는 `heroImage`)
 - 다른 레포/외부 URL 이미지를 참조하면 빌드 시 깨질 수 있음 → 반드시 `public/images/` 내부 경로 사용
 
+### 이미지 글의 heroImage 중복 방지
+
+- **heroImage와 본문 첫 이미지가 동일한 경우**:
+  - frontmatter에 `heroImageOnly: true` 추가 → PostCard 썸네일로만 사용, 본문에서는 heroImage 자동 표시 숨김
+  - 본문의 `<img>` 태그는 그대로 유지 — 캡션과 함께 원하는 위치에 표시
+  - heroImage를 별도로 지정하지 않으면 본문 첫 `<img>`가 자동으로 썸네일이 되므로, 이 경우 heroImage를 아예 생략해도 된다
+
 ### 영상 글의 썸네일 처리
 
 - **본문에 영상만 있는 경우** (이미지 없음):

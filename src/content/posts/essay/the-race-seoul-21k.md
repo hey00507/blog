@@ -1,12 +1,13 @@
 ---
 title: "2026 THE RACE SEOUL 21K"
-description: "첫 하프 마라톤 완주 — 02:00:30, 벚꽃이 만개한 서울에서의 21km"
+description: "하프 마라톤 PB 달성 — 02:00:30, 벚꽃이 만개한 서울에서의 21km"
 category: "essay"
 subcategory: "workout"
 tags: ["러닝", "하프마라톤", "the-race", "서울", "벚꽃"]
 pubDate: 2026-04-05T23:54:00
 draft: false
 heroImage: "/images/posts/the-race-seoul-21k/cherry-blossom-jump.jpeg"
+heroImageOnly: true
 ---
 
 <img src="/images/posts/the-race-seoul-21k/cherry-blossom-jump.jpeg" alt="벚꽃 만개한 대회장에서" style="max-width: 350px;" />
@@ -37,7 +38,7 @@ heroImage: "/images/posts/the-race-seoul-21k/cherry-blossom-jump.jpeg"
 **Half 02:00:30**
 
 2시간 벽을 30초 차이로 못 깼다.  
-아쉽긴 하지만 첫 하프에서 이 정도면 꽤 만족스럽다. 다음에는 꼭 깨야지.
+이전 하프 기록이 2시간 2분이었으니 1분 30초를 줄인 셈이다. PB를 달성하긴 했지만, 2시간 벽이 코앞이라 아쉬움이 더 크다. 다음에는 꼭 깨야지.
 
 ## 디어님
 
